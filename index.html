@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ReadTheCore — Quality over quantity</title>
+  <meta name="description" content="Evidence-based reading plans for non-fiction books. Read what matters. Skip the rest." />
+
+  <style>
+    :root{
+      /* Goodreads-ish palette */
+      --bg: #f4f1ea;          /* warm paper */
+      --paper: #ffffff;
+      --ink: #2b2b2b;
+      --muted: #6b6b6b;
+
+      --brand: #382110;       /* deep brown (Goodreads vibe) */
+      --brand-2: #7a5a35;     /* warm brown */
+      --accent: #00635d;      /* teal-ish */
+      --border: rgba(56,33,16,.18);
+      --shadow: 0 10px 30px rgba(56,33,16,.12);
+
+      --radius: 14px;
+      --radius-sm: 10px;
+
+      --max: 1100px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--font);
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 600px at 20% -10%, rgba(0,99,93,.10), transparent 60%),
+        radial-gradient(1000px 500px at 110% 10%, rgba(122,90,53,.16), transparent 55%),
+        linear-gradient(180deg, var(--bg), #f8f6f2 55%, var(--bg));
+    }
+
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:28px 18px 64px;
+    }
+
+    /* Top bar */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:10px 2px 22px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 220px;
+    }
+    .logoMark{
+      width:38px; height:38px;
+      border-radius:10px;
+      background: linear-gradient(135deg, var(--brand), #5a341c);
+      box-shadow: 0 10px 18px rgba(56,33,16,.18);
+      position:relative;
+      flex:0 0 auto;
+    }
+    /* simple "open-book" mark */
+    .logoMark:before, .logoMark:after{
+      content:"";
+      position:absolute;
+      top:9px; bottom:9px;
+      width:12px;
+      border-radius:3px;
+      background:rgba(244,241,234,.92);
+    }
+    .logoMark:before{left:9px; transform:skewY(-8deg)}
+    .logoMark:after{right:9px; transform:skewY(8deg)}
+    .brandName{
+      font-weight:800;
+      letter-spacing:.2px;
+      color:var(--brand);
+      font-size:18px;
+      line-height:1.1;
+    }
+    .brandName span{
+      display:block;
+      font-weight:600;
+      color:var(--muted);
+      font-size:12px;
+      margin-top:4px;
+      letter-spacing:0;
+    }
+    .topLinks{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .pill{
+      font-size:13px;
+      color:var(--brand);
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.65);
+      padding:8px 10px;
+      border-radius:999px;
+      backdrop-filter: blur(6px);
+    }
+    .pill:hover{background:rgba(255,255,255,.92); text-decoration:none}
+
+    /* Hero */
+    .hero{
+      display:grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap:18px;
+      align-items:stretch;
+    }
+
+    .card{
+      background:var(--paper);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .heroLeft{
+      padding:28px 26px 26px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid var(--border);
+      background: rgba(244,241,234,.6);
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:12.5px;
+      color:var(--brand);
+      font-weight:600;
+    }
+    .dot{
+      width:8px; height:8px;
+      border-radius:999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(0,99,93,.10);
+    }
+
+    h1{
+      margin:14px 0 10px;
+      font-size:40px;
+      line-height:1.12;
+      color:var(--brand);
+      letter-spacing:-.2px;
+    }
+    .sub{
+      margin:0 0 16px;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.55;
+      max-width: 62ch;
+    }
+
+    .heroPoints{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin:18px 0 0;
+      padding:0;
+      list-style:none;
+    }
+    .heroPoints li{
+      border:1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding:12px 12px;
+      background: rgba(244,241,234,.35);
+      font-size:13.5px;
+      color: #3a2a1f;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .check{
+      width:18px; height:18px;
+      border-radius:6px;
+      background: rgba(0,99,93,.12);
+      border:1px solid rgba(0,99,93,.22);
+      position:relative;
+      flex:0 0 auto;
+      margin-top:1px;
+    }
+    .check:after{
+      content:"";
+      position:absolute;
+      left:4px; top:4px;
+      width:8px; height:5px;
+      border-left:2px solid var(--accent);
+      border-bottom:2px solid var(--accent);
+      transform: rotate(-45deg);
+    }
+
+    /* Form card */
+    .heroRight{
+      padding:0;
+      display:flex;
+      flex-direction:column;
+    }
+    .formHeader{
+      padding:20px 20px 14px;
+      background: linear-gradient(180deg, rgba(244,241,234,.8), rgba(244,241,234,.25));
+      border-bottom:1px solid var(--border);
+    }
+    .formHeader h2{
+      margin:0;
+      font-size:18px;
+      color:var(--brand);
+      letter-spacing:.1px;
+    }
+    .formHeader p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    form{
+      padding:18px 20px 20px;
+      display:grid;
+      gap:12px;
+    }
+
+    label{
+      display:block;
+      font-size:12.5px;
+      color:#4b3a2f;
+      margin:0 0 6px;
+      font-weight:600;
+    }
+    .field{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:10px 12px;
+      outline:none;
+      width:100%;
+      font-size:14px;
+      color:var(--ink);
+      transition: box-shadow .15s, border-color .15s;
+    }
+    .field:focus{
+      border-color: rgba(0,99,93,.35);
+      box-shadow: 0 0 0 4px rgba(0,99,93,.10);
+    }
+
+    .row2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+
+    .radios{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .radio{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid var(--border);
+      background: rgba(244,241,234,.35);
+      padding:10px 10px;
+      border-radius:999px;
+      font-size:13px;
+      color:#3a2a1f;
+      cursor:pointer;
+      user-select:none;
+    }
+    .radio input{accent-color: var(--accent);}
+
+    .cta{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-top:4px;
+    }
+    .btn{
+      border:none;
+      border-radius:12px;
+      padding:12px 14px;
+      font-weight:800;
+      cursor:pointer;
+      font-size:14px;
+      letter-spacing:.2px;
+      transition: transform .04s, box-shadow .15s, background .15s;
+    }
+    .btnPrimary{
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(0,99,93,.18);
+    }
+    .btnPrimary:hover{background:#00544f}
+    .btnPrimary:active{transform: translateY(1px)}
+
+    .btnGhost{
+      background: transparent;
+      color: var(--brand);
+      border:1px solid var(--border);
+    }
+    .btnGhost:hover{background: rgba(244,241,234,.55)}
+
+    .fine{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.45;
+      margin:6px 0 0;
+    }
+
+    /* Sections */
+    .section{
+      margin-top:18px;
+      padding:18px 20px;
+    }
+    .section h3{
+      margin:0 0 10px;
+      color:var(--brand);
+      font-size:16px;
+    }
+    .cols{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:12px;
+    }
+    .mini{
+      border:1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding:14px 14px;
+      background: rgba(244,241,234,.35);
+      min-height: 92px;
+    }
+    .mini strong{
+      display:block;
+      color:#3a2a1f;
+      margin-bottom:6px;
+      font-size:13.5px;
+    }
+    .mini p{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    /* Footer */
+    footer{
+      margin-top:20px;
+      padding:18px 6px 0;
+      color:var(--muted);
+      font-size:12.5px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero{grid-template-columns: 1fr}
+      h1{font-size:34px}
+      .cols{grid-template-columns: 1fr}
+      .heroPoints{grid-template-columns: 1fr}
+      .topbar{padding-bottom:14px}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <header class="topbar">
+      <div class="brand">
+        <div class="logoMark" aria-hidden="true"></div>
+        <div class="brandName">
+          ReadTheCore
+          <span>Quality over quantity — always</span>
+        </div>
+      </div>
+
+      <nav class="topLinks">
+        <a class="pill" href="#how">How it works</a>
+        <a class="pill" href="#try">Try it free</a>
+        <a class="pill" href="#faq">Transparency</a>
+      </nav>
+    </header>
+
+    <main class="hero">
+      <!-- Left: Value prop -->
+      <section class="card heroLeft">
+        <div class="badge"><span class="dot"></span> Evidence-based reading plans (not summaries)</div>
+
+        <h1>Read what matters.<br/>Skip the rest.</h1>
+        <p class="sub">
+          ReadTheCore generates a <strong>60-minute reading plan</strong> for non-fiction books
+          by analyzing <strong>public criticism and discussion</strong>.
+          You get chapters to focus on, what to skim, and what to deprioritize — with clear confidence levels.
+        </p>
+
+        <ul class="heroPoints">
+          <li><span class="check" aria-hidden="true"></span><span><strong>Edition-aware</strong><br/>Chapter-level guidance + search anchors</span></li>
+          <li><span class="check" aria-hidden="true"></span><span><strong>Honest</strong><br/>No pretending the AI “read the whole book”</span></li>
+          <li><span class="check" aria-hidden="true"></span><span><strong>Time-bounded</strong><br/>60 minutes ≈ ~70% perceived value</span></li>
+          <li><span class="check" aria-hidden="true"></span><span><strong>Clear but firm</strong><br/>Signal vs noise, no hype</span></li>
+        </ul>
+
+        <div class="section" id="how">
+          <h3>How it works</h3>
+          <div class="cols">
+            <div class="mini">
+              <strong>1) Choose the exact edition</strong>
+              <p>Paste an Amazon/Goodreads link or ISBN so chapter mapping stays accurate.</p>
+            </div>
+            <div class="mini">
+              <strong>2) Pick your goal</strong>
+              <p>Overview, practical application, or critical reading.</p>
+            </div>
+            <div class="mini">
+              <strong>3) Get a plan</strong>
+              <p>Blocks + chapters + anchors + confidence + “why this plan”.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Form -->
+      <aside class="card heroRight" id="try">
+        <div class="formHeader">
+          <h2>Try it free</h2>
+          <p>Get a focused plan for one book. No account. No hype. Just signal.</p>
+        </div>
+
+        <!-- Replace action="#" with your form endpoint (Tally, Google Forms, Formspree, etc.) -->
+        <form action="#" method="post">
+          <div>
+            <label for="title">Book title</label>
+            <input class="field" id="title" name="title" type="text" placeholder="e.g., How Big Things Get Done" required>
+          </div>
+
+          <div class="row2">
+            <div>
+              <label for="author">Author</label>
+              <input class="field" id="author" name="author" type="text" placeholder="e.g., Bent Flyvbjerg" required>
+            </div>
+            <div>
+              <label for="edition">Edition link or ISBN</label>
+              <input class="field" id="edition" name="edition" type="text" placeholder="Amazon/Goodreads link or ISBN">
+            </div>
+          </div>
+
+          <div>
+            <label>Goal</label>
+            <div class="radios">
+              <label class="radio"><input type="radio" name="goal" value="overview" checked> Overview</label>
+              <label class="radio"><input type="radio" name="goal" value="practical"> Practical</label>
+              <label class="radio"><input type="radio" name="goal" value="critical"> Critical</label>
+            </div>
+          </div>
+
+          <div class="cta">
+            <button class="btn btnPrimary" type="submit">Generate 60-minute plan</button>
+            <button class="btn btnGhost" type="reset">Reset</button>
+          </div>
+
+          <p class="fine" id="faq">
+            <strong>Transparency:</strong> Plans are generated from public criticism & discussion and mapped to chapters + search anchors.
+            We don’t reproduce copyrighted text, and we display confidence levels to avoid false precision.
+          </p>
+        </form>
+      </aside>
+    </main>
+
+    <footer>
+      <div>© <span id="y"></span> ReadTheCore — Quality over quantity.</div>
+      <div><a href="#">Privacy</a> · <a href="#">Contact</a></div>
+    </footer>
+
+  </div>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
